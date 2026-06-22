@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ポケモンパーティ編成支援アプリ</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Party Builder</p>
+        <h1>ポケモンパーティ編成支援</h1>
+      </div>
+      <div class="header-actions">
+        <button id="newPartyBtn" class="secondary">新規</button>
+        <button id="savePartyBtn" class="primary">保存</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="editor-panel" aria-label="パーティ編集">
+        <div class="party-toolbar">
+          <label>
+            パーティ名
+            <input id="partyName" type="text" placeholder="シーズン構築、雨パーティなど">
+          </label>
+          <div class="party-meta">
+            <span id="slotCount">0 / 6</span>
+            <span id="saveState">未保存</span>
+          </div>
+        </div>
+
+        <div id="slots" class="slots"></div>
+      </section>
+
+      <aside class="side-panel">
+        <section class="panel-block">
+          <div class="block-header">
+            <h2>保存済みパーティ</h2>
+            <span id="partyCount">0件</span>
+          </div>
+          <div id="partyList" class="saved-list"></div>
+        </section>
+
+        <section class="panel-block">
+          <div class="block-header">
+            <h2>タイプ相性</h2>
+            <span id="coverageSummary">未選択</span>
+          </div>
+          <div id="typeMatrix" class="type-grid"></div>
+        </section>
+      </aside>
+    </main>
+
+    <template id="slotTemplate">
+      <article class="slot">
+        <div class="slot-head">
+          <strong class="slot-title"></strong>
+          <button class="clear-slot" type="button">クリア</button>
+        </div>
+
+        <div class="field-grid">
+          <label>
+            ポケモン名
+            <span class="autocomplete-field">
+              <input class="pokemon-input" autocomplete="off" placeholder="例: ガブリアス">
+              <span class="autocomplete-list" role="listbox"></span>
+            </span>
+          </label>
+          <label>
+            性格
+            <select class="nature-input"></select>
+          </label>
+          <label>
+            特性
+            <input class="ability-input" list="abilityOptions" autocomplete="off" placeholder="例: いかく">
+          </label>
+          <label>
+            持ち物
+            <input class="item-input" list="itemOptions" autocomplete="off" placeholder="例: こだわりスカーフ">
+          </label>
+          <label>
+            テラスタイプ
+            <select class="tera-input"></select>
+          </label>
+        </div>
+
+        <div class="moves-grid">
+          <label>技1<input class="move-input" list="moveOptions" autocomplete="off"></label>
+          <label>技2<input class="move-input" list="moveOptions" autocomplete="off"></label>
+          <label>技3<input class="move-input" list="moveOptions" autocomplete="off"></label>
+          <label>技4<input class="move-input" list="moveOptions" autocomplete="off"></label>
+        </div>
+
+        <div class="ev-row">
+          <label>H<input class="ev-input" data-stat="h" type="number" min="0" max="252" step="4" value="0"></label>
+          <label>A<input class="ev-input" data-stat="a" type="number" min="0" max="252" step="4" value="0"></label>
+          <label>B<input class="ev-input" data-stat="b" type="number" min="0" max="252" step="4" value="0"></label>
+          <label>C<input class="ev-input" data-stat="c" type="number" min="0" max="252" step="4" value="0"></label>
+          <label>D<input class="ev-input" data-stat="d" type="number" min="0" max="252" step="4" value="0"></label>
+          <label>S<input class="ev-input" data-stat="s" type="number" min="0" max="252" step="4" value="0"></label>
+          <output class="ev-total">0 / 508</output>
+        </div>
+
+        <div class="slot-footer">
+          <span class="type-pills"></span>
+          <span class="base-stats"></span>
+        </div>
+      </article>
+    </template>
+
+    <datalist id="pokemonOptions"></datalist>
+    <datalist id="moveOptions"></datalist>
+    <datalist id="abilityOptions"></datalist>
+    <datalist id="itemOptions"></datalist>
+
+    <script src="data/pokedata.js"></script>
+    <script src="data/wazadata.js"></script>
+    <script src="data/tokuseidata.js"></script>
+    <script src="data/dogudata.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
