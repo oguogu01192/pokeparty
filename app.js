@@ -1,9 +1,13 @@
 const NATURES = [
   "指定なし", "いじっぱり", "ひかえめ", "ようき", "おくびょう", "わんぱく",
   "ずぶとい", "しんちょう", "おだやか", "むじゃき", "せっかち", "ゆうかん",
-  "れいせい", "のんき", "なまいき"
+  "ゆうかん","れいせい", "のんき", "なまいき"
 ];
-
+function toHiragana(str) {
+  return str.replace(/[\u30A1-\u30F6]/g, function(match) {
+    return String.fromCharCode(match.charCodeAt(0) - 0x60);
+  });
+}
 const STORAGE_KEY = "pokemon-party-builder:v1";
 const emptySlot = () => ({
   pokemon: "",
@@ -237,8 +241,8 @@ function updateSlotSummary(node, slot) {
   const pokemon = findPokemon(slot.pokemon);
   const total = Object.values(slot.evs).reduce((sum, value) => sum + Number(value || 0), 0);
   const totalOutput = $(".ev-total", node);
-  totalOutput.textContent = `${total} / 508`;
-  totalOutput.classList.toggle("over", total > 508);
+  totalOutput.textContent = `${total} / 32`;
+  totalOutput.classList.toggle("over", total > 32);
 
   $(".type-pills", node).innerHTML = pokemon
     ? pokemon.types.map((type) => `<span class="pill">${escapeHtml(type)}</span>`).join("")
@@ -288,12 +292,22 @@ function renderTypeMatrix() {
 
   const rows = TYPES.map((attackType) => {
     const multipliers = selected.map((pokemon) => defensiveMultiplier(attackType, pokemon.types));
-    return {
-      type: attackType,
-      max: Math.max(...multipliers),
-      min: Math.min(...multipliers),
-      weakCount: multipliers.filter((value) => value > 1).length
-    };
+    const count4 = multipliers.filter(v => v === 4).length;
+const count2 = multipliers.filter(v => v === 2).length;
+const count1 = multipliers.filter(v => v === 1).length;
+const count05 = multipliers.filter(v => v === 0.5).length;
+const count025 = multipliers.filter(v => v === 0.25).length;
+const count0 = multipliers.filter(v => v === 0).length;
+return `
+<div class="type-cell">
+    <div class="type-name">${attackType}</div>
+    <div>4倍：${count4}体</div>
+    <div>2倍：${count2}体</div>
+    <div>等倍：${count1}体</div>
+    <div>半減：${count05 + count025}体</div>
+    <div>無効：${count0}体</div>
+</div>
+`;
   });
 
   const danger = rows.filter((row) => row.weakCount >= Math.ceil(selected.length / 2)).length;

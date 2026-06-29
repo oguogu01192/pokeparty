@@ -64,7 +64,11 @@
           <label>
             ポケモン名
             <span class="autocomplete-field">
-              <input class="pokemon-input" autocomplete="off" placeholder="例: ガブリアス">
+              <input
+    class="pokemon-input"
+    list="pokemonOptions"
+    autocomplete="off"
+    placeholder="例: ガブリアス">
               <span class="autocomplete-list" role="listbox"></span>
             </span>
           </label>
@@ -100,7 +104,7 @@
           <label>C<input class="ev-input" data-stat="c" type="number" min="0" max="252" step="4" value="0"></label>
           <label>D<input class="ev-input" data-stat="d" type="number" min="0" max="252" step="4" value="0"></label>
           <label>S<input class="ev-input" data-stat="s" type="number" min="0" max="252" step="4" value="0"></label>
-          <output class="ev-total">0 / 508</output>
+          <output class="ev-total">0 / 32</output>
         </div>
 
         <div class="slot-footer">
